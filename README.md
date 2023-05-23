@@ -3,6 +3,9 @@
 This repo contains the following:
 
 - The training script for the model used in my thesis.
+
+Work in progress: 
+
 - The model and trained weights.
 - A notebook with instructions on how to apply the model to your own dataset.
 
