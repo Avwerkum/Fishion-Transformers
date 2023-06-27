@@ -1,5 +1,4 @@
 # This file is used to configure the training scripts.
-# Adjust parameters and settings before running each script.
 
 #Import two dependencies
 import timm
@@ -10,10 +9,8 @@ ViTB16 =  timm.create_model('vit_base_patch16_224', pretrained=True)
 efficientnet_b2 = timm.create_model('efficientnet_b2', pretrained=True)
 deit_base_patch16_224 = torch.hub.load('facebookresearch/deit:main', 'deit_base_patch16_224', pretrained=True)
 
-#Set data locations
-TRAIN_DIR = 
-TEST_DIR = 
-VAL_DIR = 
+#Set the location of your images. The location should contain folders for each class/species.
+DATA_DIR = 
 
 #Set save location
 SAVE_DIR =
