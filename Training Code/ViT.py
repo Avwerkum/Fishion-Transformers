@@ -49,15 +49,24 @@ transform = transforms.Compose([
     transforms.Normalize(mean = [0.485, 0.456, 0.406], std = [0.229, 0.224, 0.225])
     ])
 
-trainset = ImageFolder(config.TRAIN_DIR, transform=transform)
-testset = ImageFolder(config.TEST_DIR, transform=transform)
-valset = ImageFolder(config.VAL_DIR, transform=transform)
+dataset = ImageFolder(config.DATA_DIR, transform=transform)
+
+# Split the dataset into train, validation, and test sets
+train_indices, remaining_indices = train_test_split(
+    range(len(dataset)), test_size=0.2, stratify=dataset.targets, random_state=42)
+val_indices, test_indices = train_test_split(
+    remaining_indices, test_size=0.5, stratify=[dataset.targets[i] for i in remaining_indices], random_state=42)
+
+# Create the subsets using the indices
+trainset = torch.utils.data.Subset(dataset, train_indices)
+valset = torch.utils.data.Subset(dataset, val_indices)
+testset = torch.utils.data.Subset(dataset, test_indices)
 
 # %%
 # DataLoader
-train_loader = DataLoader(trainset, batch_size=64, shuffle=True, num_workers=config.NUM_WORKERS)
-val_loader = DataLoader(valset, batch_size=64, shuffle=True, num_workers=config.NUM_WORKERS)
-test_loader = DataLoader(testset, batch_size=64, shuffle=True, num_workers=config.NUM_WORKERS)
+train_loader = DataLoader(trainset, batch_size=config.BATCH_SIZE, shuffle=True, num_workers=config.NUM_WORKERS)
+val_loader = DataLoader(valset, batch_size=config.BATCH_SIZE, shuffle=True, num_workers=config.NUM_WORKERS)
+test_loader = DataLoader(testset, batch_size=config.BATCH_SIZE, shuffle=True, num_workers=config.NUM_WORKERS)
 
 
 #Reset timer and memory stats for measuring memory use and training time
